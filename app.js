@@ -109,7 +109,6 @@ app.post("/login", async (req, res) => {
 
 // Dashboard
 app.get("/dashboard", auth, (req, res) => {
-  console.log(req.user);
   res.send("welcome to dashboard!");
 });
 module.exports = app;
