@@ -55,6 +55,37 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {});
+app.post("/login", async (req, res) => {
+  try {
+    // 1. get all data from frontend
+    const { email, password } = req.body;
+    // validation
+    if (!(email && password)) {
+      res.status(400).send("both field is required");
+    }
+    // 2. find user in DB
+    const userExists = await User_DB.findOne({ email });
+
+    if (!userExists) {
+      res.status(400).send("please provide valid user");
+    }
+    // 3. match the password
+    //   const encryptedPassword = await bcrypt.compare(password,userExists.password);  // we can also do this. if above !userExists condition not done.
+    // or we can do like this
+    if (userExists && (await bcrypt.compare(password, userExists.password))) {
+      const token = jwt.sign(
+        { id: userExists._id },
+        "jksklslse23", // process.env.jwtsecret
+        {
+          expiresIn: "2h",
+        }
+      );
+    }
+
+    // 4. send a token
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 module.exports = app;
