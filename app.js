@@ -4,11 +4,14 @@ const app = express();
 const User_DB = require("./model/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const user = require("./model/user");
+const cookieParser = require("cookie-parser");
 // connect database calling
 require("./database/database").connect();
 
 // middleware
 app.use(express.json());
+app.use(cookieParser());
 
 // home route
 app.get("/", (req, res) => {
@@ -80,9 +83,24 @@ app.post("/login", async (req, res) => {
           expiresIn: "2h",
         }
       );
+      userExists.token = token;
+      userExists.password = undefined;
+
+      // 4. send a token in userExists cookie
+      // cookie Section
+      const options = {
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        httpOnly: true,
+      };
+      res.status(200).cookie("token", token, options).json({
+        success: true,
+        token,
+        userExists,
+      });
+      //   res.status(201).json(userExists); no use now.
     }
 
-    // 4. send a token
+    // send a token
   } catch (err) {
     console.log(err);
   }
