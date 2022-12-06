@@ -1,7 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-
+const User_DB = require("./model/user");
+const bcrypt = require("bcryptjs");
 // connect database calling
 require("./database/database").connect();
 
@@ -17,9 +18,18 @@ app.post("/register", async (req, res) => {
   try {
     // steps
     // 1. get all data from body
+    const { firstName, lastName, email, password } = req.body;
     // 2. all the data should exists
-    // 3. check if user already exists
+    if (!(firstName && lastName && email && password)) {
+      res.statusCode(400).send("All fields are compulsory!");
+    }
+    // 3. check if user already exists - email
+    const existingUser = await User_DB.findOne({ email });
+    if (existingUser) {
+      res.statusCode(401).send("User already exists with this email!");
+    }
     // 4. encrypt the password
+
     // 5. save the user in Database
     // 6. generate a token for user and send it.
   } catch (err) {
