@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const User_DB = require("./model/user");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 // connect database calling
 require("./database/database").connect();
 
@@ -29,8 +30,15 @@ app.post("/register", async (req, res) => {
       res.statusCode(401).send("User already exists with this email!");
     }
     // 4. encrypt the password
-
+    const myEncryptedPassword = await bcrypt.hash(password, 10);
     // 5. save the user in Database
+    const createdUser = await User_DB.create({
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+
     // 6. generate a token for user and send it.
   } catch (err) {
     console.log(err);
