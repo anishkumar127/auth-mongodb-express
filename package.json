@@ -1,0 +1,32 @@
+{
+  "name": "auth-mongodb-express",
+  "version": "1.0.0",
+  "description": "doing auth system using mongodb and express . Creating a API System.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anishkumar127/auth-mongodb-express.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anishkumar127/auth-mongodb-express/issues"
+  },
+  "homepage": "https://github.com/anishkumar127/auth-mongodb-express#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.5"
+  }
+}
