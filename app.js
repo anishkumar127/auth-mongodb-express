@@ -25,12 +25,12 @@ app.post("/register", async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
     // 2. all the data should exists
     if (!(firstName && lastName && email && password)) {
-      res.statusCode(400).send("All fields are compulsory!");
+      res.status(400).send("All fields are compulsory!");
     }
     // 3. check if user already exists - email
     const existingUser = await User_DB.findOne({ email });
     if (existingUser) {
-      res.statusCode(401).send("User already exists with this email!");
+      res.status(401).send("User already exists with this email!");
     }
     // 4. encrypt the password
     const myEncryptedPassword = await bcrypt.hash(password, 10);
@@ -52,7 +52,7 @@ app.post("/register", async (req, res) => {
     createdUser.token = token;
     createdUser.password = undefined;
 
-    res.statusCode(201).json(createdUser);
+    res.status(201).json(createdUser);
   } catch (err) {
     console.log(err);
   }
