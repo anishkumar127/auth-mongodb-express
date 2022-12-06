@@ -36,13 +36,25 @@ app.post("/register", async (req, res) => {
       firstName,
       lastName,
       email,
-      password,
+      password: myEncryptedPassword,
     });
-
     // 6. generate a token for user and send it.
+    const token = jwt.sign(
+      { id: createdUser._id, email: createdUser.email },
+      "jksklslse23", // process.env.jwtsecret
+      {
+        expiresIn: "2h",
+      }
+    );
+    createdUser.token = token;
+    createdUser.password = undefined;
+
+    res.statusCode(201).json(createdUser);
   } catch (err) {
     console.log(err);
   }
 });
+
+app.post("/login", async (req, res) => {});
 
 module.exports = app;
