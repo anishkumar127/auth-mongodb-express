@@ -95,10 +95,10 @@ app.post("/login", async (req, res) => {
       res.status(200).cookie("token", token, options).json({
         success: true,
         token,
-        userExists,
+        // userExists, if we want to send then we can send. but we should not send.
       });
-      //   res.status(201).json(userExists); no use now.
     }
+    res.status(404).json("something wrong! please provide right details!");
 
     // send a token
   } catch (err) {
